@@ -1,5 +1,6 @@
 #include <cctype>
 #include <iostream>
+#include <sstream>
 #include <list>
 #include <string>
 
@@ -11,25 +12,32 @@ using namespace std;
 #include "variable.h"
 #include "literal.h"
 #include "parse.h"
+#include "or.h"
+#include "and.h"
+#include "equality.h"
+#include "greaterThan.h"
+#include "lessThan.h"
+#include "ternary.h"
+#include "negation.h"
 
-Expression* Operand::parse()
+Expression* Operand::parse(stringstream& in)
 {
     char paren;
-    double value;
+    int value;
 
-    cin >> ws;
-    if (isdigit(cin.peek()))
+    in >> ws;
+    if (isdigit(in.peek()))
     {
-        cin >> value;
+        in >> value;
         Expression* literal = new Literal(value);
         return literal;
     }
-    if (cin.peek() == '(')
+    if (in.peek() == '(')
     {
-        cin >> paren;
-        return SubExpression::parse();
+        in >> paren;
+        return SubExpression::parse(in);
     }
     else
-        return new Variable(parseName());
+        return new Variable(parseName(in));
     return 0;
 }
