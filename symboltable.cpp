@@ -1,3 +1,15 @@
+/**
+ * File: symboltable.cpp
+ * Author: UMUC Faculty, Modified by John N. Lasheski
+ * Date: December 7, 2013
+ * Platform: Windows 8, Microsoft Visual Studio Express 2012 for Windows Desktop 
+ * 
+ * Class: UMUC CMSC 330, Section 7981
+ * Project: 2
+ * 
+ * The symbol table stores the varibales and their correspnding values from the expression input for later
+ * use withiin the compuation of the epxression.
+ */
 #include <string>
 #include <vector>
 using namespace std;

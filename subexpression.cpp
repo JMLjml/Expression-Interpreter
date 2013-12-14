@@ -1,3 +1,15 @@
+/**
+ * File: subexpression.cpp
+ * Author: UMUC Faculty, Modified by John M. Lasheski
+ * Date: December 7, 2013
+ * Platform: Windows 8, Microsoft Visual Studio Express 2012 for Windows Desktop 
+ * 
+ * Class: UMUC CMSC 330, Section 7981
+ * Project: 2
+ * 
+ * The SubExpression class defines the node of a binary expression tree used for evaluating matematical expressions. The parse method
+ * uses a switch statement to determine which of the sub classes of SubExpression should be called to evaluate the statement.
+ */
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -28,80 +40,48 @@ Expression* SubExpression::parse(stringstream& in)
     Expression* left;
     Expression* right;
 	Expression* condition;
-    char operation, paren;
-   
+    char operation, paren;   
 
-	/* I think this is the file where I need to build the three different types of <exp> */
-
-	// When we get here we should have burnt a paren char
-	//the next chars in has to be an operand
+	/* This is where the program determines which of the three tupes of <exp> needs to be built. When we get here
+	 * we should have burnt a paren char and the next chars in has to be an operand */
 
     left = Operand::parse(in);
 
-	//at this point the next thing in could be an <op>, or ':' or '!'
-
-	//this is where the switch goes
+	// At this point the next thing in could be an <op>, or ':' or '!'
+	// Use a switch statement to call the correct operation
 
     in >> operation;
     
-    switch (operation)
-    {
-        case '+': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new Plus(left, right);        		
-		
-		case '-': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new Minus(left, right);
+	if(operation == '!') {// Negation Expression
+		in >> paren;
+		return new Negation(left,NULL); //Passing a NULL as the second argument as the negation opeation really only functions on one operand
+	
+	} else if(operation == ':') {//Ternary Expression
+		right = Operand::parse(in);
+		in >> paren;// this char should acutaly be a '?'
+		condition = Operand::parse(in);
+		in >> paren;
+		return new Ternary(left,right,condition);
+	
+	} else {//Every other Expression
 
-		case '*': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new Times(left, right);
+		//These two operations need to be performed for every case that follows
+		right = Operand::parse(in);
+		in >> paren;
 		
-		case '/': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new Divide(left, right);
-
-		case '|': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new Or(left, right);
-		
-		case '&': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new And(left, right);
-
-		case '=': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new Equality(left, right);
-		
-		case '>': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new GreaterThan(left, right);
-		
-		case '<': 
-			right = Operand::parse(in);
-			in >> paren;
-			return new LessThan(left, right);
-
-		case ':':
-			right = Operand::parse(in);
-			in >> paren;// this char should acutaly be a '?'
-			condition = Operand::parse(in);
-			in >> paren;
-			return new Ternary(left,right,condition);
-
-		case '!':
-			in >> paren;
-			return new Negation(left,NULL);
-    }
-    return 0;
+		switch (operation)
+		{
+			case '+': return new Plus(left, right);
+			case '-': return new Minus(left, right);
+			case '*': return new Times(left, right);
+			case '/': return new Divide(left, right);
+			case '|': return new Or(left, right);
+			case '&': return new And(left, right);
+			case '=': return new Equality(left, right);
+			case '>': return new GreaterThan(left, right);
+			case '<': return new LessThan(left, right);
+		}
+	}	
+	return 0;
 }
         

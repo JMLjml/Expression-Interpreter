@@ -35,3 +35,10 @@
 (x !), x = 0; /* Expect value = 1 */
 (x !), x = 1; /* Expect Value = 0 */
 (x !), x = -1; /* Expect Value = 0 */
+(x!), x=1; /* Expect Value = 0 */
+(x>1), x=2; /* Expect Value = 1 */
+(x<5), x=2; /* Expect Value = 1 */
+(x=3), x=2; /* Expect Value = 0 */
+(x&3), x=2; /* Expect Value = 1 */
+(x+(2|4)), x=2; /* Expect Value = 3 */
+(3:2?(x>0)), x=3; /* Expect Value = 3 */
